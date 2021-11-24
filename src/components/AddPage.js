@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router";
-import { Dispatch } from "react";
 import { useDispatch } from "react-redux";
-import { createCard } from "../redux/modules/Card";
-
+import { createCardFB } from "../redux/modules/Card";
+// icon
+import { IoIosArrowBack } from "react-icons/io";
 const AddPage = () => {
   const history = useHistory();
   const word = React.useRef();
@@ -12,28 +12,24 @@ const AddPage = () => {
   const example = React.useRef();
   const dispatch = useDispatch();
 
-  // input 데이터 확인하기
-  // window.setTimeout(() => {
-  //   // 1초 뒤에는?!
-  //   console.log(word.current.value);
-  //   console.log(explanation.current.value);
-  //   console.log(example.current.value);
-  // }, 5000);
-
   // 추가하기
   const addCardList = () => {
     //액션객체 넣어주기
     dispatch(
-      createCard({
+      createCardFB({
         word: word.current.value,
         explanation: explanation.current.value,
         example: example.current.value,
       })
     );
-    history.goBack();
   };
   return (
     <div>
+      <IoIosArrowBack
+        onClick={() => {
+          history.goBack();
+        }}
+      />
       <h1 style={{ color: "#333" }}>Add word card</h1>
       <Card>
         <span>단어</span>

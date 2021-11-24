@@ -4,12 +4,10 @@ import { Route } from "react-router";
 import Main from "./components/Main";
 import AddPage from "./components/AddPage";
 import styled from "styled-components";
-import { db } from "./firebase";
+
+import React from "react";
 
 function App() {
-  //파이어베이스 잘 db확인해보기
-  console.log(db);
-
   return (
     <AppAll className="App">
       <MainBox>
@@ -25,6 +23,8 @@ const AppAll = styled.div`
   height: 100vh;
   background: #eee;
   display: flex;
+  /* flex-wrap: wrap; */
+
   justify-content: center;
   align-items: center;
 `;

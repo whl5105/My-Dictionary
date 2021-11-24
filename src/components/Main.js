@@ -1,13 +1,21 @@
 import React from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { loadCardFB, deleteCardFB } from "../redux/modules/Card";
+// icon
+import { TiTickOutline, TiTimes } from "react-icons/ti";
 
 const Main = (props) => {
   const history = useHistory();
-  // 어떤함수를 가져오고싶니
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(loadCardFB());
+  }, []);
+
   const data_list = useSelector((state) => state.card.card);
-  console.log(data_list);
+
   return (
     <>
       <h1 style={{ color: "#333" }}>MY DICTIONARY</h1>
@@ -15,8 +23,19 @@ const Main = (props) => {
         {data_list.map((c, idx) => {
           return (
             <Card key={idx}>
+              <div style={{ position: "absolute", right: "30px" }}>
+                <TiTickOutline />
+                <TiTimes
+                  onClick={() => {
+                    console.log(data_list[idx].id);
+                    dispatch(deleteCardFB(data_list[idx].id));
+                  }}
+                  style={{ fontSize: "24px" }}
+                />
+              </div>
               <div>
                 <span>단어</span>
+
                 <p>{c.word}</p>
               </div>
               <div>
@@ -44,19 +63,17 @@ const Main = (props) => {
 const Cardbox = styled.div`
   display: flex;
   flex-direction: column;
-  /* background-color: blueviolet; */
   overflow-x: hidden;
   overflow-y: auto;
   height: 71vh;
 `;
 const Card = styled.div`
-  background-color: #d4d9e5;
-  border: none;
+  border: 2px solid #d4d9e5;
   border-radius: 5px;
   padding: 20px;
   margin-bottom: 10px;
+  position: relative;
   & div {
-    /* background-color: yellow; */
     text-align: left;
     margin-bottom: 10px;
   }
