@@ -1,19 +1,17 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { Route } from "react-router";
+import React from "react";
 import Main from "./components/Main";
 import AddPage from "./components/AddPage";
 import styled from "styled-components";
-
-import React from "react";
+import { Route } from "react-router";
 
 function App() {
   return (
     <AppAll className="App">
       <MainBox>
-        {/* 페이지 경로 설정 */}
         <Route path="/" exact component={Main} />
-        <Route path="/addpage" component={AddPage} />
+        <Route path="/addpage" component={AddPage} exact />
+        <Route path="/addpage/:idx" component={AddPage} />
       </MainBox>
     </AppAll>
   );
@@ -23,7 +21,6 @@ const AppAll = styled.div`
   height: 100vh;
   background: #eee;
   display: flex;
-  /* flex-wrap: wrap; */
 
   justify-content: center;
   align-items: center;
@@ -32,9 +29,10 @@ const MainBox = styled.div`
   background: #fff;
   width: 30%;
   height: 80vh;
-  min-width: 400px;
+  min-width: 300px;
   max-height: 80vh;
   padding: 20px;
   position: relative;
+  border-radius: 10px;
 `;
 export default App;

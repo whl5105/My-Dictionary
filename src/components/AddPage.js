@@ -1,57 +1,142 @@
 import React from "react";
 import styled from "styled-components";
-import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
-import { createCardFB } from "../redux/modules/Card";
-// icon
-import { IoIosArrowBack } from "react-icons/io";
-const AddPage = () => {
+import { useHistory, useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { createCardFB ,updateCardFB} from "../redux/modules/Card";
+// ---- ICON ----
+import Button from "@mui/material/Button";
+
+const AddPage = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const params = useParams();
+
   const word = React.useRef();
   const explanation = React.useRef();
   const example = React.useRef();
-  const dispatch = useDispatch();
 
-  // 추가하기
-  const addCardList = () => {
-    //액션객체 넣어주기
+  const data_list = useSelector((state) => state.card.card);
+  const changeValue = data_list.[params.idx];
+
+  // ---- 추가 버튼 클릭 ----
+  function addCardList() {
+    let list = {
+      word: word.current.value,
+      explanation: explanation.current.value,
+      example: example.current.value,
+    };
+  
+    //---- 입력조건 (입력값 3개 모두 내용이 있을경우 dispatch ,앞뒤 공백 검사) ----
+    if(list.word === "" && list.explanation ===""&& list.example === ""){
+      alert("내용을 모두 입력해주세요")
+    }else{
+      let gom = list.word.replace(/^\s+|\s+$/gm, "");
+      let gom2 = list.explanation.replace(/^\s+|\s+$/gm, "");
+      let gom3 = list.example.replace(/^\s+|\s+$/gm, "");
+      if(gom === "" || gom2==="" || gom3 === ""){
+        alert("내용을 모두 입력해주세요")
+      }else{
+        dispatch(
+          createCardFB({
+            word: word.current.value,
+            explanation: explanation.current.value,
+            example: example.current.value,
+          })
+        );
+        history.goBack();
+      }
+    }
+  }
+  //---- 수정 버튼 클릭 ---- 
+  function updateCardList() {
     dispatch(
-      createCardFB({
+      updateCardFB({
         word: word.current.value,
         explanation: explanation.current.value,
         example: example.current.value,
-      })
+      },changeValue.id)
     );
-  };
+    history.goBack()
+  }
+
   return (
     <div>
-      <IoIosArrowBack
-        onClick={() => {
-          history.goBack();
-        }}
-      />
-      <h1 style={{ color: "#333" }}>Add word card</h1>
+      {params.idx ? (
+        <h1 style={{ color: "#333" , textAlign: "center" } }>수정하기</h1>
+      ) : (
+        <h1 style={{ color: "#333" , textAlign: "center" }}>추가하기</h1>
+      )}
       <Card>
         <span>단어</span>
-        <input type="text" placeholder="단어를 입력하세요." ref={word}></input>
+        {params.idx ? (
+          <input type="text" ref={word} defaultValue={changeValue.word}></input>
+        ) : (
+          <input
+            type="text"
+            placeholder="단어를 입력하세요."
+            ref={word}
+          ></input>
+        )}
       </Card>
       <Card>
         <span>설명</span>
-        <input
-          type="text"
-          placeholder="설명을 입력하세요."
-          ref={explanation}
-        ></input>
+        {params.idx ? (
+          <input
+            type="text"
+            ref={explanation}
+            defaultValue={changeValue.explanation}
+          ></input>
+        ) : (
+          <input
+            type="text"
+            placeholder="설명을 입력하세요."
+            ref={explanation}
+          ></input>
+        )}
       </Card>
       <Card>
         <span>예시</span>
-        <input
-          type="text"
-          placeholder="예시를 입력하세요."
-          ref={example}
-        ></input>
+        {params.idx ? (
+          <input
+            type="text"
+            ref={example}
+            defaultValue={changeValue.example}
+          ></input>
+        ) : (
+          <input
+            type="text"
+            placeholder="예시를 입력하세요."
+            ref={example}
+          ></input>
+        )}
       </Card>
-      <Button onClick={addCardList}>추가하기</Button>
+      {params.idx ? (
+        <Button
+          style={{ width: "100%", marginBottom: "10px", padding: "10px 0" }}
+          variant="contained"
+          onClick={updateCardList}
+        >
+          수정
+        </Button>
+      ) : (
+        <Button
+          style={{ width: "100%", marginBottom: "10px", padding: "10px 0" }}
+          variant="contained"
+          onClick={addCardList}
+        >
+          추가
+        </Button>
+      )}
+
+      <Button
+        style={{ width: "100%", padding: "10px 0" }}
+        variant="outlined"
+        onClick={() => {
+          history.goBack();
+        }}
+      >
+        취소
+      </Button>
     </div>
   );
 };
@@ -64,6 +149,7 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
+  min-width: 250px;
   & span {
     margin-bottom: 4px;
     font-weight: bold;
@@ -80,18 +166,5 @@ const Card = styled.div`
     border: 1px solid #9da2af;
   }
 `;
-const Button = styled.button`
-  width: 100%;
-  border-radius: 5px;
-  font-size: 20px;
-  border: none;
-  padding: 15px;
-  background-color: #d4d9e5;
-  cursor: pointer;
-  &:hover {
-    background-color: #9da2af;
-    color: #fff;
-    transition: 0.3s;
-  }
-`;
+
 export default AddPage;
