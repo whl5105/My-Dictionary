@@ -1,3 +1,27 @@
+## 프로젝트
+나만의 사전
+
+<br>
+
+## 제작 기간
+2021년 11월 22일 ~ 26일, 총 작업기간 5일
+
+<br>
+
+## 사용 기술
+- React
+- Styled Components
+- Hook API
+- Redux
+- Firebase 
+
+<br>
+
+## 웹사이트 링크
+- my-dictionary2.firebaseapp.com
+
+<br>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
