@@ -17,6 +17,6 @@
 <br>
 
 
-## 웹사이트 링크
+## 웹사이트 링크 (현재 )
 - [사이트 보러가기](http://my-dictionary2.firebaseapp.com)
 
